@@ -7,6 +7,8 @@ HTML Form in this code is further improved by adding **capability to upload file
 
 [Example2.html](https://github.com/geo2004/GeolocationForm-v2/Example2.html)  is the main form with additional progress bar and complete message once form submission is finished.  
 
+[Example3.html](https://github.com/geo2004/GeolocationForm-v2/Example3.html)  is the main form with additional progress bar and complete message once form submission is finished, and capabilities to upload multiple files and the rest of the form data are duplicated in every row of file.  
+
 [GAppScript](https://github.com/geo2004/GeolocationForm-v2/GAppScript) file is the Google App Script code which has function to send the files to dedicated Google Drive folder, and at the same time send the other form data to Google Sheet document.  
 
 Looks the tutorial in [Geolocation Form](https://github.com/geo2004/GeolocationForm) about how to use the script on your HTML form and GSheet. 
