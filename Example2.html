@@ -97,6 +97,37 @@ form button[type="button"]:hover {
       padding: 10px;
       margin-bottom: 20px;
     }
+	
+	/* Progress Bar Styles */
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.progress-bar:before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 0;
+  background-color: #007bff;
+  animation: progress 3s linear infinite;
+}
+@keyframes progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Complete Message Styles */
+.complete-message {
+  padding: 10px;
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -121,66 +152,76 @@ form button[type="button"]:hover {
     <input type="file" accept="" name="image"><br>
   </div>
 
-  <!-- Progress bar and completed message -->
-  <label for="progress">Upload Progress:</label>
-  <progress id="progress" value="0" max="<IPAddress>" style="<IPAddress>"></progress><br>
-  <p id="<IPAddress>" style="<IPAddress>">Upload Completed!</p>
+  <!-- progress bar element -->
+  <div class="progress-bar" style="display: none;">
+    Uploading...
+  </div>
 
-  <button type="<IPAddress>">Upload</button>
+  <!-- complete message element -->
+  <div class="complete-message" style="display: none;">
+    Upload complete!
+  </div>
+
+  <button type="submit">Upload</button>  
 </form>
 <script>
       function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          alert("Geolocation is not supported by this browser.");
-        }
-      }
-      
-      function showPosition(position) {
-        document.getElementById("Latitude").value = position.coords.latitude;
-        document.getElementById("Longitude").value = position.coords.longitude;
-      }
- window.onload = function() {
-  let form = document.querySelector("form");
-  let progressBar = document.querySelector("#progress");
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    progressBar.style.display = "block"; // Show the progress bar
+function showPosition(position) {
+  document.getElementById("Latitude").value = position.coords.latitude;
+  document.getElementById("Longitude").value = position.coords.longitude;
+}
 
-    // Upload the file
-    let file = form.elements.image.files[0];
-    let fr = new FileReader();
-    fr.addEventListener("loadend", () => {
-      let res = fr.result;
-      let spt = res.split("base64,")[1];
-      let obj = {
-        base64: spt,
-        type: file.type,
-        name: file.name,
-        date: form.elements.date.value,
-        email: form.elements.email.value,
-        identity: form.elements.identity.value,
-        description: form.elements.description.value,
-        latitude: form.elements.latitude.value,
-        longitude: form.elements.longitude.value,
-      };
-      fetch("https://script.google.com/macros/s/AKfycbwit9tlaa_JrFvEiGE3V2pvkD8sVp_2YvrHf86PdXG6t2UDxB5BUj5tx1PpXQLEnRM7-A/exec", {
-        method: "POST",
-        body: JSON.stringify(obj)
-      })
-      .then(r => r.text())
-      .then(data => {
-        console.log(data);
-        progressBar.style.display = "none"; // Hide the progress bar
-		console.log(document.querySelector("#completed"));
-        document.querySelector("#completed").style.display = "block"; // Show the completed message
-      });
+let form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // show the progress bar
+  var progressBar = document.querySelector('.progress-bar');
+  progressBar.style.display = 'block';
+
+  let file = form.elements.image.files[0];
+  let fr = new FileReader();
+  fr.addEventListener("loadend", () => {
+    let res = fr.result;
+    let spt = res.split("base64,")[1];
+    let obj = {
+      base64: spt,
+      type: file.type,
+      name: file.name,
+      date: form.elements.date.value,
+      email: form.elements.email.value,
+      identity: form.elements.identity.value,
+      description: form.elements.description.value,
+      latitude: form.elements.latitude.value,
+      longitude: form.elements.longitude.value,
+    };
+    fetch("https://script.google.com/macros/s/AKfycbwit9tlaa_JrFvEiGE3V2pvkD8sVp_2YvrHf86PdXG6t2UDxB5BUj5tx1PpXQLEnRM7-A/exec", {
+      method: "POST",
+      body: JSON.stringify(obj)
+    })
+    .then(r => r.text())
+    .then(data => {
+      console.log(data);
+
+      // hide the progress bar
+      progressBar.style.display = 'none';
+
+      // show the complete message
+      var completeMessage = document.querySelector('.complete-message');
+      completeMessage.style.display = 'block';
+	        // clear the form
+      form.reset();
     });
-    fr.readAsDataURL(file);
   });
-};
+  fr.readAsDataURL(file);
+});
 </script>
 </body>
 </html>
