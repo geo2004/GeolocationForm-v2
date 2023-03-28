@@ -1,7 +1,7 @@
 # GeolocationForm-v2
 # This repositori is an update to my previous [Geolocation Form](https://github.com/geo2004/GeolocationForm).
 
-HTML Form in this code is further improved by adding a capability to upload files in certain Google Drive Folder.  
+HTML Form in this code is further improved by adding **capability to upload files in certain Google Drive Folder**.  
 
 [Example.html](https://github.com/geo2004/GeolocationForm-v2/Example.html)  is the main form which you can modify at ease.  
 
