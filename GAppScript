@@ -1,0 +1,18 @@
+let app = SpreadsheetApp.getActiveSpreadsheet();
+let sheet = app.getSheetByName("Sheet1");
+
+function doPost(e){
+  try{
+    let obj = JSON.parse(e.postData.contents);
+    let dcode = Utilities.base64Decode(obj.base64);
+    let blob = Utilities.newBlob(dcode,obj.type,obj.name);
+    let folder = DriveApp.getFoldersByName("Uploads").next();
+    let newFile = folder.createFile(blob);
+    let link = newFile.getUrl();
+    let lr = sheet.getLastRow();
+    sheet.getRange(lr+1, 1, 1, 8).setValues([[obj.date, obj.email, obj.identity, obj.description, obj.latitude, obj.longitude, obj.name, link]]);
+    return ContentService.createTextOutput("image uploaded")
+  }catch(err){
+    return ContentService.createTextOutput(err)
+  }
+}
