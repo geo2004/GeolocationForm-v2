@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Include the piexifjs library -->
+<script src="https://cdn.jsdelivr.net/npm/piexifjs"></script>
+    <title>Document</title>
+	<style>
+	/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Form Styles */
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+form input[type="date"],
+form input[type="email"],
+form input[type="text"],
+form input[type="number"]
+ {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+form input[type="file"] {
+
+    width: 100%;
+  padding: 5px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+form button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+form button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+form button[type="button"] {
+  display: block;
+  width: 25%;
+  padding: 10px;
+  border: none;
+  background-color: #0369a0;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+form button[type="button"]:hover {
+  background-color: #03A9F4;
+}
+    .location-section {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: #03a9f43b;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+	  .upload-section {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: #cddc3966;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+	
+	/* Progress Bar Styles */
+.progress-indicator {
+  width: 100%;
+  height: 20px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.progress-indicator:before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 0;
+  background-color: #007bff;
+  animation: progress 3s linear infinite;
+}
+@keyframes progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Complete Message Styles */
+.complete-message {
+  padding: 10px;
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<form>
+  <label for="date">Date:</label>
+  <input type="date" name="date"><br>
+  <label for="email">Email:</label>
+  <input type="email" name="email" placeholder="Enter your email"><br>
+  <label for="identity">Name:</label>
+  <input type="text" name="identity" placeholder="Enter your name"><br>
+  <label for="description">Description:</label>
+  <input type="text" name="description" placeholder="Describe some data"><br>
+  <div class="location-section">
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="Latitude" name="latitude" placeholder="Latitude auto generated once you click Get location button"><br>
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="Longitude" name="longitude" placeholder="Longitude auto generated once you click Get location button"><br>
+    <button type="button" onclick="getLocation()">Get Location</button><br><br>
+  </div>
+  <div class="upload-section">
+    <label for="file">File Upload:</label>
+     <input type="file" accept="image/*" name="image"><br>
+  </div>
+
+  <!-- progress bar element -->
+  <div class="progress-indicator" style="display: none;">
+    Uploading...
+  </div>
+
+  <!-- complete message element -->
+  <div class="complete-message" style="display: none;">
+    Upload complete!
+  </div>
+
+  <button type="submit">Upload</button>  
+</form>
+<script>
+      function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  document.getElementById("Latitude").value = position.coords.latitude;
+  document.getElementById("Longitude").value = position.coords.longitude;
+}
+
+let form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  // show the progress indicator
+  var progressIndicator = document.querySelector('.progress-indicator');
+  progressIndicator.style.display = 'block';
+
+  // get the selected files
+  let files = form.elements.image.files;
+
+  // collect the form data
+  let date = form.elements.date.value;
+  let email = form.elements.email.value;
+  let identity = form.elements.identity.value;
+  let description = form.elements.description.value;
+  let latitude = form.elements.latitude.value;
+  let longitude = form.elements.longitude.value;
+
+  // create an array of promises for each file upload
+  let promises = [];
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    let fr = new FileReader();
+    fr.addEventListener("loadend", () => {
+      let res = fr.result;
+      let spt = res.split("base64,")[1];
+
+      // Use the piexifjs library to add the geolocation information to the EXIF metadata of the image
+      var zeroth = {};
+      var exif = {};
+      var gps = {};
+      gps[piexif.GPSIFD.GPSLatitudeRef] = latitude < 0 ? 'S' : 'N';
+      gps[piexif.GPSIFD.GPSLatitude] = piexif.GPSHelper.degToDmsRational(Math.abs(latitude));
+      gps[piexif.GPSIFD.GPSLongitudeRef] = longitude < 0 ? 'W' : 'E';
+      gps[piexif.GPSIFD.GPSLongitude] = piexif.GPSHelper.degToDmsRational(Math.abs(longitude));
+      var exifObj = {"0th":zeroth, "Exif":exif, "GPS":gps};
+      var exifbytes = piexif.dump(exifObj);
+      var newDataUri = piexif.insert(exifbytes, res);
+
+      let obj = {
+        base64: newDataUri.split("base64,")[1],
+        type: file.type,
+        name: file.name,
+        date: date,
+        email: email,
+        identity: identity,
+        description: description,
+        latitude: latitude,
+        longitude: longitude,
+      };
+      let promise = fetch("https://script.google.com/macros/s/#####/exec", { // Your Google App Script WebApp URL
+        method: "POST",
+        body: JSON.stringify(obj)
+      });
+      promises.push(promise);
+    });
+    fr.readAsDataURL(file);
+  }
+
+  // wait for all uploads to complete
+  Promise.all(promises)
+    .then(responses => Promise.all(responses.map(r => r.text())))
+    .then(data => {
+      console.log(data);
+
+      // hide the progress indicator
+      progressIndicator.style.display = 'none';
+
+      // show the complete message
+      var completeMessage = document.querySelector('.complete-message');
+      completeMessage.style.display = 'block';
+
+      // clear the form
+      form.reset();
+    });
+});
+</script>
+</body>
+</html>
