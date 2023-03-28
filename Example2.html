@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<style>
+	/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Form Styles */
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+form input[type="date"],
+form input[type="email"],
+form input[type="text"],
+form input[type="number"]
+ {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+form input[type="file"] {
+
+    width: 100%;
+  padding: 5px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+form button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+form button[type="submit"]:hover {
+  background-color: #0069d9;
+}
+form button[type="button"] {
+  display: block;
+  width: 25%;
+  padding: 10px;
+  border: none;
+  background-color: #0369a0;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+form button[type="button"]:hover {
+  background-color: #03A9F4;
+}
+    .location-section {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: #03a9f43b;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+	  .upload-section {
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      background-color: #cddc3966;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+<form>
+  <label for="date">Date:</label>
+  <input type="date" name="date"><br>
+  <label for="email">Email:</label>
+  <input type="email" name="email" placeholder="Enter your email"><br>
+  <label for="identity">Name:</label>
+  <input type="text" name="identity" placeholder="Enter your name"><br>
+  <label for="description">Description:</label>
+  <input type="text" name="description" placeholder="Describe some data"><br>
+  <div class="location-section">
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="Latitude" name="latitude" placeholder="Latitude auto generated once you click Get location button"><br>
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="Longitude" name="longitude" placeholder="Longitude auto generated once you click Get location button"><br>
+    <button type="button" onclick="getLocation()">Get Location</button><br><br>
+  </div>
+  <div class="upload-section">
+    <label for="file">File Upload:</label>
+    <input type="file" accept="" name="image"><br>
+  </div>
+
+  <!-- Progress bar and completed message -->
+  <label for="progress">Upload Progress:</label>
+  <progress id="progress" value="0" max="<IPAddress>" style="<IPAddress>"></progress><br>
+  <p id="<IPAddress>" style="<IPAddress>">Upload Completed!</p>
+
+  <button type="<IPAddress>">Upload</button>
+</form>
+<script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+      
+      function showPosition(position) {
+        document.getElementById("Latitude").value = position.coords.latitude;
+        document.getElementById("Longitude").value = position.coords.longitude;
+      }
+ window.onload = function() {
+  let form = document.querySelector("form");
+  let progressBar = document.querySelector("#progress");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    progressBar.style.display = "block"; // Show the progress bar
+
+    // Upload the file
+    let file = form.elements.image.files[0];
+    let fr = new FileReader();
+    fr.addEventListener("loadend", () => {
+      let res = fr.result;
+      let spt = res.split("base64,")[1];
+      let obj = {
+        base64: spt,
+        type: file.type,
+        name: file.name,
+        date: form.elements.date.value,
+        email: form.elements.email.value,
+        identity: form.elements.identity.value,
+        description: form.elements.description.value,
+        latitude: form.elements.latitude.value,
+        longitude: form.elements.longitude.value,
+      };
+      fetch("https://script.google.com/macros/s/AKfycbwit9tlaa_JrFvEiGE3V2pvkD8sVp_2YvrHf86PdXG6t2UDxB5BUj5tx1PpXQLEnRM7-A/exec", {
+        method: "POST",
+        body: JSON.stringify(obj)
+      })
+      .then(r => r.text())
+      .then(data => {
+        console.log(data);
+        progressBar.style.display = "none"; // Hide the progress bar
+		console.log(document.querySelector("#completed"));
+        document.querySelector("#completed").style.display = "block"; // Show the completed message
+      });
+    });
+    fr.readAsDataURL(file);
+  });
+};
+</script>
+</body>
+</html>
