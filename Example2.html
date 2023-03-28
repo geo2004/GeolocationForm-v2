@@ -202,7 +202,7 @@ form.addEventListener("submit", (event) => {
       latitude: form.elements.latitude.value,
       longitude: form.elements.longitude.value,
     };
-    fetch("https://script.google.com/macros/s/AKfycbwit9tlaa_JrFvEiGE3V2pvkD8sVp_2YvrHf86PdXG6t2UDxB5BUj5tx1PpXQLEnRM7-A/exec", {
+    fetch("https://script.google.com/macros/s/######/exec", { // Your Google App Script WebApp URL
       method: "POST",
       body: JSON.stringify(obj)
     })
