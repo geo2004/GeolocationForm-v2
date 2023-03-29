@@ -21,6 +21,7 @@ Looks the tutorial in [Geolocation Form](https://github.com/geo2004/GeolocationF
 2. Pay attention to the code screenshot below. **Uploads** is the name of the folder in your Google Drive, modify it if you want to set a different name. 
 3. **Sheet1** is the Google Sheet's Sheet Name, change it if the sheet name in your Google Sheet document is different. 
 4. The example **[[obj.date, obj.email, obj.identity, obj.description, obj.latitude, obj.longitude, obj.name, link]]** array should exactly match (case sensitive) with the Google Sheet's columns name/headers and "name" HTML element in the HTML form (except the latitude and longitude are using ID element). If you set a different "name" element in the HTML form and GSheets Headers/Columns Name (bottom picture below), modify this array, or else, the code will not works. 
+5. [Example.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example4.html) in this repo is using eight columns, if you want to add more columns in your form, change the 8 value on this line **sheet.getRange(lr+1, 1, 1, 8)** according to the number of the columns on your form.  
 
 ![image](https://user-images.githubusercontent.com/46329778/228274474-e7ad08a7-926a-401c-a61f-392ccde50878.png)
 
