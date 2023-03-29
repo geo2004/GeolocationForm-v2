@@ -9,7 +9,9 @@ HTML Form in this code is further improved by adding **capability to upload file
 
 [Example3.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example3.html)  is the main form with additional progress bar and complete message once form submission is finished, and capabilities to upload multiple files and the rest of the form data are duplicated in every row of uploaded file.  
 
-[Example4.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example4.html)  is the main form with additional progress bar and complete message once form submission is finished, and capabilities to upload single image file in any format (JPEG, TIF, PNG, BMP you name it) and inject the captured Geolocation to the EXIF Metadata using [PIEXIFJS](https://piexifjs.readthedocs.io/en/latest/about.html), before uploading the file to Google Drive.
+[Example4.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example4.html)  is the main form with additional progress bar and complete message once form submission is finished, and capabilities to upload single image file in any format (JPEG, TIF, PNG, BMP you name it) and inject the captured Geolocation to the EXIF Metadata using [PIEXIFJS](https://piexifjs.readthedocs.io/en/latest/about.html), before uploading the file to Google Drive.  
+
+[Example5.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example5.html) is a form like [Example3.html](https://github.com/geo2004/GeolocationForm-v2/blob/main/Example3.html), only I add a map viewer (using Leaflet JS) for the geolocation information, along with accuracy value obtained from the device's GNSS, so you can confirm if the geolocation is accurate enough before form data submission.
 
 [GAppScript](https://github.com/geo2004/GeolocationForm-v2/blob/main/GAppScript) file is the Google App Script code which has function to send the files to dedicated Google Drive folder, and at the same time send the other form data to Google Sheet document.  
 
